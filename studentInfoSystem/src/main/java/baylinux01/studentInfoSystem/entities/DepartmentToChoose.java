@@ -16,7 +16,15 @@ public class DepartmentToChoose {
 	private long id;
 	@Column(nullable = false,unique = true)
 	private String department_name;
+	@Column(nullable = false)
+	private int year;
 	
+	public int getYear() {
+		return year;
+	}
+	public void setYear(int year) {
+		this.year = year;
+	}
 	public long getId() {
 		return id;
 	}
