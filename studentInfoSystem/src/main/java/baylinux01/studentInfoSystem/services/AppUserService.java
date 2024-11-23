@@ -55,7 +55,7 @@ public class AppUserService {
 		return appUserRepository.findAll();
 	}
 
-	public String createAppUser(String username, String password,long departmentToChooseId) {
+	public String createAppUser(HttpServletRequest request,String username, String password,long departmentToChooseId) {
 		// TODO Auto-generated method stub
 		List<AppUser> appUsers=getAllAppUsers();
 		int i=0;
@@ -82,56 +82,68 @@ public class AppUserService {
 		return "success";
 	}
 	
-	public String createStudent(String username, String password, long departmentToChooseId) {
-		List<AppUser> appUsers=getAllAppUsers();
-		int i=0;
-		while(i<appUsers.size())
+	public String createStudent(HttpServletRequest request, String username, String password, long departmentToChooseId) {
+		Principal pl=request.getUserPrincipal();
+		String requestinUsername=pl.getName();
+		AppUser requestingUser=appUserRepository.findByUsername(requestinUsername);
+		if(requestingUser!=null&&requestingUser.getRoles().contains("ADMIN"))
 		{
-			if(appUsers.get(i).getUsername().equalsIgnoreCase(username))
-				return "appuser with this username already exists";
-			i++;
-		}
-		AppUser appUser=new AppUser();
-		appUser.setUsername(username);
-		appUser.setPassword(passwordEncoder.encode(password));
-		appUser.setRoles("USER-STUDENT");
-		DepartmentToChoose departmentToChoose=
-				departmentToChooseRepository.findById(departmentToChooseId).orElse(null);
-		if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
-		{
-			appUser.setDepartment(departmentToChoose.getDepartment_name());
-			if(departmentToChoose.isHas_preparation()==true) appUser.setGrade(0);
-			else appUser.setGrade(1);
-		}
-		else return "fail";
-		appUserRepository.save(appUser);
-		return "success";
+			List<AppUser> appUsers=getAllAppUsers();
+			int i=0;
+			while(i<appUsers.size())
+			{
+				if(appUsers.get(i).getUsername().equalsIgnoreCase(username))
+					return "appuser with this username already exists";
+				i++;
+			}
+			AppUser appUser=new AppUser();
+			appUser.setUsername(username);
+			appUser.setPassword(passwordEncoder.encode(password));
+			appUser.setRoles("USER-STUDENT");
+			DepartmentToChoose departmentToChoose=
+					departmentToChooseRepository.findById(departmentToChooseId).orElse(null);
+			if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
+			{
+				appUser.setDepartment(departmentToChoose.getDepartment_name());
+				if(departmentToChoose.isHas_preparation()==true) appUser.setGrade(0);
+				else appUser.setGrade(1);
+			}
+			else return "fail";
+			appUserRepository.save(appUser);
+			return "success";
+		}else return "you don't have the authority to do that";
 	}
 	
-	public String createTeacher(String username, String password, long departmentToChooseId) {
-		List<AppUser> appUsers=getAllAppUsers();
-		int i=0;
-		while(i<appUsers.size())
+	public String createTeacher(HttpServletRequest request,String username, String password, long departmentToChooseId) {
+		Principal pl=request.getUserPrincipal();
+		String requestinUsername=pl.getName();
+		AppUser requestingUser=appUserRepository.findByUsername(requestinUsername);
+		if(requestingUser!=null&&requestingUser.getRoles().contains("ADMIN"))
 		{
-			if(appUsers.get(i).getUsername().equalsIgnoreCase(username))
-				return "appuser with this username already exists";
-			i++;
-		}
-		AppUser appUser=new AppUser();
-		appUser.setUsername(username);
-		appUser.setPassword(passwordEncoder.encode(password));
-		appUser.setRoles("USER-TEACHER");
-		DepartmentToChoose departmentToChoose=
-				departmentToChooseRepository.findById(departmentToChooseId).orElse(null);
-		if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
-		{
-			appUser.setDepartment(departmentToChoose.getDepartment_name());
-			if(departmentToChoose.isHas_preparation()==true) appUser.setGrade(0);
-			else appUser.setGrade(1);
-		}
-		else return "fail";
-		appUserRepository.save(appUser);
-		return "success";
+			List<AppUser> appUsers=getAllAppUsers();
+			int i=0;
+			while(i<appUsers.size())
+			{
+				if(appUsers.get(i).getUsername().equalsIgnoreCase(username))
+					return "appuser with this username already exists";
+				i++;
+			}
+			AppUser appUser=new AppUser();
+			appUser.setUsername(username);
+			appUser.setPassword(passwordEncoder.encode(password));
+			appUser.setRoles("USER-TEACHER");
+			DepartmentToChoose departmentToChoose=
+					departmentToChooseRepository.findById(departmentToChooseId).orElse(null);
+			if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
+			{
+				appUser.setDepartment(departmentToChoose.getDepartment_name());
+				if(departmentToChoose.isHas_preparation()==true) appUser.setGrade(0);
+				else appUser.setGrade(1);
+			}
+			else return "fail";
+			appUserRepository.save(appUser);
+			return "success";
+		}else return "you don't have the authority to do that";
 	}
 
 	public AppUser login(String username, String password) {

@@ -49,42 +49,42 @@ public class AppUserController {
 	@PostMapping("/createAppUser")
 	public String createAppUser
 	(
-			HttpServletRequest req,String username,String password,long departmentToChooseId
+			HttpServletRequest request,String username,String password,long departmentToChooseId
 	)
 	{
-//		String username=req.getParameter("username");
-//		String password=req.getParameter("password");
-//		String departmentToChooseIdStr=req.getParameter("departmentToChooseId");
+//		String username=request.getParameter("username");
+//		String password=request.getParameter("password");
+//		String departmentToChooseIdStr=request.getParameter("departmentToChooseId");
 //		long departmentToChooseId=Long.valueOf(departmentToChooseIdStr);
-		return appUserService.createAppUser(username,password,departmentToChooseId);
+		return appUserService.createAppUser(request,username,password,departmentToChooseId);
 		
 	}
 	
 	@PostMapping("/createStudent")
 	public String createStudent
 	(
-			HttpServletRequest req,String username,String password,long departmentToChooseId
+			HttpServletRequest request,String username,String password,long departmentToChooseId
 	)
 	{
-//		String username=req.getParameter("username");
-//		String password=req.getParameter("password");
-//		String departmentToChooseIdStr=req.getParameter("departmentToChooseId");
+//		String username=request.getParameter("username");
+//		String password=request.getParameter("password");
+//		String departmentToChooseIdStr=request.getParameter("departmentToChooseId");
 //		long departmentToChooseId=Long.valueOf(departmentToChooseIdStr);
-		return appUserService.createStudent(username,password,departmentToChooseId);
+		return appUserService.createStudent(request,username,password,departmentToChooseId);
 		
 	}
 	
 	@PostMapping("/createTeacher")
 	public String createTeacher
 	(
-			HttpServletRequest req,String username,String password,long departmentToChooseId
+			HttpServletRequest request,String username,String password,long departmentToChooseId
 	)
 	{
-//		String username=req.getParameter("username");
-//		String password=req.getParameter("password");
-//		String departmentToChooseIdStr=req.getParameter("departmentToChooseId");
+//		String username=request.getParameter("username");
+//		String password=request.getParameter("password");
+//		String departmentToChooseIdStr=request.getParameter("departmentToChooseId");
 //		long departmentToChooseId=Long.valueOf(departmentToChooseIdStr);
-		return appUserService.createTeacher(username,password,departmentToChooseId);
+		return appUserService.createTeacher(request,username,password,departmentToChooseId);
 		
 	}
 	
