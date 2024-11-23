@@ -1,6 +1,7 @@
 package baylinux01.studentInfoSystem.services;
 
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class AppUserService {
 		appUser.setUsername(username);
 		appUser.setPassword(passwordEncoder.encode(password));
 		appUser.setRoles("USER");
+		appUser.setRegistration_date(LocalDate.now());
 		DepartmentToChoose departmentToChoose=
 				departmentToChooseRepository.findById(departmentToChooseId).orElse(null);
 		if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
@@ -100,6 +102,7 @@ public class AppUserService {
 			appUser.setUsername(username);
 			appUser.setPassword(passwordEncoder.encode(password));
 			appUser.setRoles("USER-STUDENT");
+			appUser.setRegistration_date(LocalDate.now());
 			DepartmentToChoose departmentToChoose=
 					departmentToChooseRepository.findById(departmentToChooseId).orElse(null);
 			if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
@@ -132,6 +135,7 @@ public class AppUserService {
 			appUser.setUsername(username);
 			appUser.setPassword(passwordEncoder.encode(password));
 			appUser.setRoles("USER-TEACHER");
+			appUser.setRegistration_date(LocalDate.now());
 			DepartmentToChoose departmentToChoose=
 					departmentToChooseRepository.findById(departmentToChooseId).orElse(null);
 			if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
