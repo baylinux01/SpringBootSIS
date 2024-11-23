@@ -46,7 +46,7 @@ public class AppUserController {
 	{
 		return appUserService.getAllAppUsers();
 	}
-	@PostMapping("/register")
+	@PostMapping("/createAppUser")
 	public String createAppUser
 	(
 			HttpServletRequest req,String username,String password,long departmentToChooseId
@@ -60,12 +60,64 @@ public class AppUserController {
 		
 	}
 	
+	@PostMapping("/createStudent")
+	public String createStudent
+	(
+			HttpServletRequest req,String username,String password,long departmentToChooseId
+	)
+	{
+//		String username=req.getParameter("username");
+//		String password=req.getParameter("password");
+//		String departmentToChooseIdStr=req.getParameter("departmentToChooseId");
+//		long departmentToChooseId=Long.valueOf(departmentToChooseIdStr);
+		return appUserService.createStudent(username,password,departmentToChooseId);
+		
+	}
+	
+	@PostMapping("/createTeacher")
+	public String createTeacher
+	(
+			HttpServletRequest req,String username,String password,long departmentToChooseId
+	)
+	{
+//		String username=req.getParameter("username");
+//		String password=req.getParameter("password");
+//		String departmentToChooseIdStr=req.getParameter("departmentToChooseId");
+//		long departmentToChooseId=Long.valueOf(departmentToChooseIdStr);
+		return appUserService.createTeacher(username,password,departmentToChooseId);
+		
+	}
+	
 	@PostMapping("/login")
 	public AppUser login(@RequestParam("username") String username
 			,@RequestParam("password") String password) 
 					throws NoSuchAlgorithmException
 	{
 		return appUserService.login(username,password);
+	}
+	
+	@PostMapping("/adminLogin")
+	public AppUser adminLogin(@RequestParam("username") String username
+			,@RequestParam("password") String password) 
+					throws NoSuchAlgorithmException
+	{
+		return appUserService.adminLogin(username,password);
+	}
+	
+	@PostMapping("/teacherLogin")
+	public AppUser teacherLogin(@RequestParam("username") String username
+			,@RequestParam("password") String password) 
+					throws NoSuchAlgorithmException
+	{
+		return appUserService.teacherLogin(username,password);
+	}
+	
+	@PostMapping("/studentLogin")
+	public AppUser studentLogin(@RequestParam("username") String username
+			,@RequestParam("password") String password) 
+					throws NoSuchAlgorithmException
+	{
+		return appUserService.studentLogin(username,password);
 	}
 	
 	@PutMapping("/updateAppUserPassword")

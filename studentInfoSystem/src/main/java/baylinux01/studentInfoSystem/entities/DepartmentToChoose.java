@@ -18,7 +18,15 @@ public class DepartmentToChoose {
 	private String department_name;
 	@Column(nullable = false)
 	private int year;
+	@Column(nullable=false)
+	private boolean has_preparation;
 	
+	public boolean isHas_preparation() {
+		return has_preparation;
+	}
+	public void setHas_preparation(boolean has_preparation) {
+		this.has_preparation = has_preparation;
+	}
 	public int getYear() {
 		return year;
 	}

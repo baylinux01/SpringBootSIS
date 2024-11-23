@@ -27,9 +27,10 @@ public class DepartmentToChooseController {
 	}
 	
 	@PostMapping("/createDepartmentToChoose")
-	public String createDepartmentToChoose(HttpServletRequest request,String departmentName,int year)
+	public String createDepartmentToChoose(HttpServletRequest request,String departmentName,int year
+			,boolean hasPreparation)
 	{
-		return departmentToChooseService.createDepartmentToChoose(request,departmentName,year);
+		return departmentToChooseService.createDepartmentToChoose(request,departmentName,year,hasPreparation);
 	}
 	
 	@GetMapping("/getAllDepartmentsToChoose")

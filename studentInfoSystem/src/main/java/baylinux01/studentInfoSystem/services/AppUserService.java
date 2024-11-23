@@ -72,7 +72,63 @@ public class AppUserService {
 		DepartmentToChoose departmentToChoose=
 				departmentToChooseRepository.findById(departmentToChooseId).orElse(null);
 		if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
-		appUser.setDepartment(departmentToChoose.getDepartment_name());
+		{
+			appUser.setDepartment(departmentToChoose.getDepartment_name());
+			if(departmentToChoose.isHas_preparation()==true) appUser.setGrade(0);
+			else appUser.setGrade(1);
+		}
+		else return "fail";
+		appUserRepository.save(appUser);
+		return "success";
+	}
+	
+	public String createStudent(String username, String password, long departmentToChooseId) {
+		List<AppUser> appUsers=getAllAppUsers();
+		int i=0;
+		while(i<appUsers.size())
+		{
+			if(appUsers.get(i).getUsername().equalsIgnoreCase(username))
+				return "appuser with this username already exists";
+			i++;
+		}
+		AppUser appUser=new AppUser();
+		appUser.setUsername(username);
+		appUser.setPassword(passwordEncoder.encode(password));
+		appUser.setRoles("USER-STUDENT");
+		DepartmentToChoose departmentToChoose=
+				departmentToChooseRepository.findById(departmentToChooseId).orElse(null);
+		if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
+		{
+			appUser.setDepartment(departmentToChoose.getDepartment_name());
+			if(departmentToChoose.isHas_preparation()==true) appUser.setGrade(0);
+			else appUser.setGrade(1);
+		}
+		else return "fail";
+		appUserRepository.save(appUser);
+		return "success";
+	}
+	
+	public String createTeacher(String username, String password, long departmentToChooseId) {
+		List<AppUser> appUsers=getAllAppUsers();
+		int i=0;
+		while(i<appUsers.size())
+		{
+			if(appUsers.get(i).getUsername().equalsIgnoreCase(username))
+				return "appuser with this username already exists";
+			i++;
+		}
+		AppUser appUser=new AppUser();
+		appUser.setUsername(username);
+		appUser.setPassword(passwordEncoder.encode(password));
+		appUser.setRoles("USER-TEACHER");
+		DepartmentToChoose departmentToChoose=
+				departmentToChooseRepository.findById(departmentToChooseId).orElse(null);
+		if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
+		{
+			appUser.setDepartment(departmentToChoose.getDepartment_name());
+			if(departmentToChoose.isHas_preparation()==true) appUser.setGrade(0);
+			else appUser.setGrade(1);
+		}
 		else return "fail";
 		appUserRepository.save(appUser);
 		return "success";
@@ -86,7 +142,11 @@ public class AppUserService {
 		{
 			
 			AppUser appUser=(AppUser) appUserRepository.findByUsername(username);
-			if(appUser!=null)
+			if(appUser!=null
+					&&appUser.getRoles().contains("USER")
+					&&!appUser.getRoles().contains("ADMIN")
+					&&!appUser.getRoles().contains("STUDENT")
+					&&!appUser.getRoles().contains("TEACHER"))
 			{
 				
 				return appUser;
@@ -94,6 +154,72 @@ public class AppUserService {
 			
 		}
 		else return null;
+	}
+	
+	public AppUser adminLogin(String username, String password) {
+		// TODO Auto-generated method stub
+				Authentication authentication =authenticationManager
+						.authenticate(new UsernamePasswordAuthenticationToken(username,password));
+				if(authentication.isAuthenticated()) 
+				{
+					
+					AppUser appUser=(AppUser) appUserRepository.findByUsername(username);
+					if(appUser!=null
+							&&appUser.getRoles().contains("USER")
+							&&appUser.getRoles().contains("ADMIN")
+							&&!appUser.getRoles().contains("STUDENT")
+							&&!appUser.getRoles().contains("TEACHER"))
+					{
+						
+						return appUser;
+					}return null;
+					
+				}
+				else return null;
+	}
+	
+	public AppUser teacherLogin(String username, String password) {
+		// TODO Auto-generated method stub
+				Authentication authentication =authenticationManager
+						.authenticate(new UsernamePasswordAuthenticationToken(username,password));
+				if(authentication.isAuthenticated()) 
+				{
+					
+					AppUser appUser=(AppUser) appUserRepository.findByUsername(username);
+					if(appUser!=null
+							&&appUser.getRoles().contains("USER")
+							&&!appUser.getRoles().contains("ADMIN")
+							&&!appUser.getRoles().contains("STUDENT")
+							&&appUser.getRoles().contains("TEACHER"))
+					{
+						
+						return appUser;
+					}return null;
+					
+				}
+				else return null;
+	}
+	
+	public AppUser studentLogin(String username, String password) {
+		// TODO Auto-generated method stub
+				Authentication authentication =authenticationManager
+						.authenticate(new UsernamePasswordAuthenticationToken(username,password));
+				if(authentication.isAuthenticated()) 
+				{
+					
+					AppUser appUser=(AppUser) appUserRepository.findByUsername(username);
+					if(appUser!=null
+							&&appUser.getRoles().contains("USER")
+							&&!appUser.getRoles().contains("ADMIN")
+							&&appUser.getRoles().contains("STUDENT")
+							&&!appUser.getRoles().contains("TEACHER"))
+					{
+						
+						return appUser;
+					}return null;
+					
+				}
+				else return null;
 	}
 
 	public String updateAppUserPassword(HttpServletRequest request, String newPassword) {
@@ -133,6 +259,10 @@ public class AppUserService {
 		}
 		else return "fail";
 	}
+
+	
+
+	
 
 	
 
