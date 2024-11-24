@@ -27,7 +27,14 @@ public class AppUser {
 	private String program;
 	private LocalDate registration_date;
 	private int grade;
+	private AppUser supervisor;
 	
+	public AppUser getSupervisor() {
+		return supervisor;
+	}
+	public void setSupervisor(AppUser supervisor) {
+		this.supervisor = supervisor;
+	}
 	public String getProgram() {
 		return program;
 	}
