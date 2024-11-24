@@ -64,13 +64,14 @@ public class AppUserController {
 	public String createStudent
 	(
 			HttpServletRequest request,String username,String password,long departmentToChooseId
+			,long programToChooseId
 	)
 	{
 //		String username=request.getParameter("username");
 //		String password=request.getParameter("password");
 //		String departmentToChooseIdStr=request.getParameter("departmentToChooseId");
 //		long departmentToChooseId=Long.valueOf(departmentToChooseIdStr);
-		return appUserService.createStudent(request,username,password,departmentToChooseId);
+		return appUserService.createStudent(request,username,password,departmentToChooseId,programToChooseId);
 		
 	}
 	

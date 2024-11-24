@@ -15,8 +15,10 @@ import org.springframework.stereotype.Service;
 
 import baylinux01.studentInfoSystem.entities.AppUser;
 import baylinux01.studentInfoSystem.entities.DepartmentToChoose;
+import baylinux01.studentInfoSystem.entities.ProgramToChoose;
 import baylinux01.studentInfoSystem.repositories.AppUserRepository;
 import baylinux01.studentInfoSystem.repositories.DepartmentToChooseRepository;
+import baylinux01.studentInfoSystem.repositories.ProgramToChooseRepository;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
@@ -26,6 +28,7 @@ public class AppUserService {
 	AuthenticationManager authenticationManager;
 	PasswordEncoder passwordEncoder;
 	DepartmentToChooseRepository departmentToChooseRepository;
+	ProgramToChooseRepository programToChooseRepository;
 	
 	@Autowired
 	public AppUserService(
@@ -33,12 +36,14 @@ public class AppUserService {
 			,AuthenticationManager authenticationManager
 			,PasswordEncoder passwordEncoder
 			,DepartmentToChooseRepository departmentToChooseRepository
+			,ProgramToChooseRepository programToChooseRepository
 		) {
 		super();
 		this.appUserRepository = appUserRepository;
 		this.authenticationManager = authenticationManager;
 		this.passwordEncoder = passwordEncoder;
 		this.departmentToChooseRepository=departmentToChooseRepository;
+		this.programToChooseRepository=programToChooseRepository;
 	}
 
 	public AppUser getAppUserByUsername(String username) {
@@ -56,7 +61,8 @@ public class AppUserService {
 		return appUserRepository.findAll();
 	}
 
-	public String createAppUser(HttpServletRequest request,String username, String password,long departmentToChooseId) {
+	public String createAppUser(HttpServletRequest request,String username
+			,String password,long departmentToChooseId) {
 		// TODO Auto-generated method stub
 		List<AppUser> appUsers=getAllAppUsers();
 		int i=0;
@@ -76,15 +82,15 @@ public class AppUserService {
 		if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
 		{
 			appUser.setDepartment(departmentToChoose.getDepartment_name());
-			if(departmentToChoose.isHas_preparation()==true) appUser.setGrade(0);
-			else appUser.setGrade(1);
+			
 		}
 		else return "fail";
 		appUserRepository.save(appUser);
 		return "success";
 	}
 	
-	public String createStudent(HttpServletRequest request, String username, String password, long departmentToChooseId) {
+	public String createStudent(HttpServletRequest request, String username
+			,String password, long departmentToChooseId,long programToChooseId) {
 		Principal pl=request.getUserPrincipal();
 		String requestinUsername=pl.getName();
 		AppUser requestingUser=appUserRepository.findByUsername(requestinUsername);
@@ -108,10 +114,18 @@ public class AppUserService {
 			if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
 			{
 				appUser.setDepartment(departmentToChoose.getDepartment_name());
-				if(departmentToChoose.isHas_preparation()==true) appUser.setGrade(0);
-				else appUser.setGrade(1);
+				
 			}
 			else return "fail";
+			ProgramToChoose programToChoose=
+					programToChooseRepository.findById(programToChooseId).orElse(null);
+			if(programToChoose!=null&&programToChoose.getName()!=null)
+			{
+				appUser.setProgram(programToChoose.getName());
+				if(programToChoose.isHas_preparation()==true) appUser.setGrade(0);
+				else appUser.setGrade(1);
+			}
+			else return "programToChoose not found for student";
 			appUserRepository.save(appUser);
 			return "success";
 		}else return "you don't have the authority to do that";
@@ -141,8 +155,7 @@ public class AppUserService {
 			if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
 			{
 				appUser.setDepartment(departmentToChoose.getDepartment_name());
-				if(departmentToChoose.isHas_preparation()==true) appUser.setGrade(0);
-				else appUser.setGrade(1);
+				
 			}
 			else return "fail";
 			appUserRepository.save(appUser);

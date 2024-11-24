@@ -24,9 +24,16 @@ public class AppUser {
 	private String roles;
 	private double gpa;
 	private String department;
+	private String program;
 	private LocalDate registration_date;
 	private int grade;
 	
+	public String getProgram() {
+		return program;
+	}
+	public void setProgram(String program) {
+		this.program = program;
+	}
 	public LocalDate getRegistration_date() {
 		return registration_date;
 	}

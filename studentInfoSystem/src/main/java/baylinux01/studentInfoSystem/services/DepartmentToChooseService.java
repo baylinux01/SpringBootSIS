@@ -29,8 +29,7 @@ public class DepartmentToChooseService {
 		this.appUserRepository=appUserRepository;
 	}
 
-	public String createDepartmentToChoose(HttpServletRequest request, String departmentName,int year
-			,boolean hasPreparation) 
+	public String createDepartmentToChoose(HttpServletRequest request, String departmentName) 
 	{
 		Principal pl=request.getUserPrincipal();
 		String requestingUsername=pl.getName();
@@ -40,8 +39,6 @@ public class DepartmentToChooseService {
 		{
 			DepartmentToChoose departmentToChoose= new DepartmentToChoose();
 			departmentToChoose.setDepartment_name(departmentName);
-			departmentToChoose.setYear(year);
-			departmentToChoose.setHas_preparation(hasPreparation);
 			departmentToChooseRepository.save(departmentToChoose);
 			return "departmentToChoose successfuly saved";
 		}else

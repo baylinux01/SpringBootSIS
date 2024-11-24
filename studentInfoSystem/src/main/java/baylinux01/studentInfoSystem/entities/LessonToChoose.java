@@ -12,7 +12,7 @@ public class LessonToChoose {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@Column(nullable=false)
-	private String department;
+	private String program;
 	@Column(unique=true,nullable=false)
 	private String code;
 	@Column(nullable=false)
@@ -26,11 +26,12 @@ public class LessonToChoose {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getDepartment() {
-		return department;
+	
+	public String getProgram() {
+		return program;
 	}
-	public void setDepartment(String department) {
-		this.department = department;
+	public void setProgram(String program) {
+		this.program = program;
 	}
 	public String getCode() {
 		return code;

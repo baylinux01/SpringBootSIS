@@ -33,12 +33,12 @@ public class LessonToChooseController {
 			HttpServletRequest request
 			,String code
 			, String name
-			,long departmentToChooseId
+			,long programToChooseId
 			,int semiYear
 	)
 	{
 		return lessonToChooseService
-				.createLessonToChoose(request,code,name,departmentToChooseId,semiYear);
+				.createLessonToChoose(request,code,name,programToChooseId,semiYear);
 	}
 	
 	@GetMapping("/getAllLessonsToChoose")
