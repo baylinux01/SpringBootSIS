@@ -29,6 +29,7 @@ public class AppUser {
 	private int grade;
 	private AppUser supervisor;
 	
+	
 	public AppUser getSupervisor() {
 		return supervisor;
 	}
