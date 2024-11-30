@@ -299,6 +299,7 @@ public class AppUserService {
 					&&student.getDepartment().equalsIgnoreCase(teacher.getDepartment()))
 			{
 				List<AppUser> students=teacher.getStudents();
+				if(!students.contains(student))
 				students.add(student);
 				teacher.setStudents(students);
 				student.setSupervisor(teacher);
@@ -343,6 +344,7 @@ public class AppUserService {
 							&&user.getDepartment().equalsIgnoreCase(teacher.getDepartment()))
 					{
 						List<AppUser> students=teacher.getStudents();
+						if(!students.contains(user))
 						students.add(user);
 						teacher.setStudents(students);
 						user.setSupervisor(teacher);
