@@ -49,14 +49,14 @@ public class AppUserController {
 	@PostMapping("/createAppUser")
 	public String createAppUser
 	(
-			HttpServletRequest request,String username,String password,long departmentToChooseId
+			HttpServletRequest request,String username,String password
 	)
 	{
 //		String username=request.getParameter("username");
 //		String password=request.getParameter("password");
 //		String departmentToChooseIdStr=request.getParameter("departmentToChooseId");
 //		long departmentToChooseId=Long.valueOf(departmentToChooseIdStr);
-		return appUserService.createAppUser(request,username,password,departmentToChooseId);
+		return appUserService.createAppUser(request,username,password);
 		
 	}
 	

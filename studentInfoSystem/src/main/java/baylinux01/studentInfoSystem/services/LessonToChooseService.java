@@ -54,6 +54,7 @@ public class LessonToChooseService {
 				if(semiYear<=programToChoose.getYear()*2)
 				{
 					lessonToChoose.setSemi_year(semiYear);
+					lessonToChooseRepository.save(lessonToChoose);
 				}else return "semiyear is not suitable";
 				
 			}else 

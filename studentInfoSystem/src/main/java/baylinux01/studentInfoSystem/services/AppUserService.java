@@ -62,7 +62,7 @@ public class AppUserService {
 	}
 
 	public String createAppUser(HttpServletRequest request,String username
-			,String password,long departmentToChooseId) {
+			,String password) {
 		// TODO Auto-generated method stub
 		List<AppUser> appUsers=getAllAppUsers();
 		int i=0;
@@ -77,14 +77,7 @@ public class AppUserService {
 		appUser.setPassword(passwordEncoder.encode(password));
 		appUser.setRoles("USER");
 		appUser.setRegistration_date(LocalDate.now());
-		DepartmentToChoose departmentToChoose=
-				departmentToChooseRepository.findById(departmentToChooseId).orElse(null);
-		if(departmentToChoose!=null && departmentToChoose.getDepartment_name()!=null)
-		{
-			appUser.setDepartment(departmentToChoose.getDepartment_name());
-			
-		}
-		else return "fail";
+		
 		appUserRepository.save(appUser);
 		return "success";
 	}
