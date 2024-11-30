@@ -20,6 +20,7 @@ import baylinux01.studentInfoSystem.repositories.AppUserRepository;
 import baylinux01.studentInfoSystem.repositories.DepartmentToChooseRepository;
 import baylinux01.studentInfoSystem.repositories.ProgramToChooseRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 
 @Service
 public class AppUserService {
@@ -280,6 +281,87 @@ public class AppUserService {
 			return "success";
 		}
 		else return "fail";
+	}
+
+	@Transactional
+	public String assignSupervisorToAStudent(HttpServletRequest request, String studentUsername, String supervisorUsername) {
+		Principal pl=request.getUserPrincipal();
+		String requestingUsername=pl.getName();
+		AppUser requestingUser=appUserRepository.findByUsername(requestingUsername);
+		if(requestingUser!=null&&requestingUser.getRoles().contains("ADMIN"))
+		{
+			AppUser student=appUserRepository.findByUsername(studentUsername);
+			AppUser teacher=appUserRepository.findByUsername(supervisorUsername);
+			if(student!=null
+					&&teacher!=null
+					&&student.getRoles().contains("STUDENT")
+					&&teacher.getRoles().contains("TEACHER")
+					&&student.getDepartment().equalsIgnoreCase(teacher.getDepartment()))
+			{
+				List<AppUser> students=teacher.getStudents();
+				students.add(student);
+				teacher.setStudents(students);
+				student.setSupervisor(teacher);
+				appUserRepository.save(teacher);
+				appUserRepository.save(student);
+				return "supervisor successfully assigned";
+			}
+			else
+			{
+				return "fail";
+			}
+		}
+		else
+		{
+			return "you do not have the authority to do that";
+		}
+		
+		
+		
+	}
+
+	@Transactional
+	public String assignSupervisorToAGradeOfStudents(HttpServletRequest request, long grade
+			, long programToChooseId
+			, String supervisorUsername) {
+		
+		Principal pl=request.getUserPrincipal();
+		String requestingUsername=pl.getName();
+		AppUser requestingUser=appUserRepository.findByUsername(requestingUsername);
+		if(requestingUser!=null&&requestingUser.getRoles().contains("ADMIN"))
+		{
+			ProgramToChoose programToChoose=programToChooseRepository.findById(programToChooseId).orElse(null);
+			
+			List<AppUser> users=appUserRepository.findByProgram(programToChoose.getName());
+			AppUser teacher=appUserRepository.findByUsername(supervisorUsername);
+			if(teacher!=null&&users!=null&&teacher.getRoles().contains("TEACHER"))
+			{
+				for(AppUser user: users)
+				{
+					if(user.getRoles().contains("STUDENT")
+							&&user.getGrade()==grade
+							&&user.getDepartment().equalsIgnoreCase(teacher.getDepartment()))
+					{
+						List<AppUser> students=teacher.getStudents();
+						students.add(user);
+						teacher.setStudents(students);
+						user.setSupervisor(teacher);
+						appUserRepository.save(teacher);
+						appUserRepository.save(user);
+					}
+				}
+				return "supervisor is successfully assigned";
+			}
+			else
+			{
+				return "fail";
+			}
+		}
+		else
+		{
+			return "you do not have the authority to do that";
+		}
+		
 	}
 
 	

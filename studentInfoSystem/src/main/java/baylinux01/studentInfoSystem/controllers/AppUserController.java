@@ -133,8 +133,17 @@ public class AppUserController {
 	{
 		return appUserService.updateAppUserUsername(request,newUsername);
 	}
+	@PostMapping("/assignSupervisorToAStudent")
+	public String assignSupervisorToAStudent(HttpServletRequest request,String studentUsername,String supervisorUsername)
+	{
+		return appUserService.assignSupervisorToAStudent(request,studentUsername,supervisorUsername);
+	}
 	
-	
+	@PostMapping("/assignSupervisorToAGradeOfStudents")
+	public String assignSupervisorToAGradeOfStudents(HttpServletRequest request,long grade,long programToChooseId,String supervisorUsername)
+	{
+		return appUserService.assignSupervisorToAGradeOfStudents(request,grade,programToChooseId,supervisorUsername);
+	}
 	
 	
 	
