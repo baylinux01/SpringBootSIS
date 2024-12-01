@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Lesson {
@@ -22,6 +23,7 @@ public class Lesson {
 	private String letter_grade;
 	@ManyToOne
 	private LessonRegistration lesson_registration;
+	@ManyToOne
 	private AppUser teacher;
 	
 	
