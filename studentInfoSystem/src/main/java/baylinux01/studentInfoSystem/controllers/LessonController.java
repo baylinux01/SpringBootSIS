@@ -46,6 +46,11 @@ public class LessonController {
 	{
 		return lessonService.giveFinalNoteToLesson(request,lessonId,finalNote);
 	}
+	@PutMapping("/giveButNoteToLesson")
+	public String giveButNoteToLesson(HttpServletRequest request,long lessonId, double butNote)
+	{
+		return lessonService.giveButNoteToLesson(request,lessonId,butNote);
+	}
 	@GetMapping("/getLessonsOfAStudentForACertainTerm")
 	public List<Lesson> getLessonsOfAStudentForACertainTerm(HttpServletRequest request,long termId,String studentUsername)
 	{

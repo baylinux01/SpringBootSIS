@@ -282,6 +282,31 @@ public class LessonService {
 			return "fail";
 		}
 	}
+	public String giveButNoteToLesson(HttpServletRequest request, long lessonId, double butNote) {
+		Principal pl=request.getUserPrincipal();
+		String requestingUsername=pl.getName();
+		Lesson lesson=lessonRepository.findById(lessonId).orElse(null);
+		AppUser requestingUser=appUserRepository.findByUsername(requestingUsername);
+		if(requestingUser!=null&&requestingUser.getRoles().contains("ADMIN"))
+		{
+			lesson.setBut_note(butNote);
+			lessonRepository.save(lesson);
+			return "final note successfully saved";
+		}
+		else if(requestingUser!=null
+				&&requestingUser.getRoles().contains("TEACHER")
+				&&lesson!=null
+				&&lesson.getTeacher()==requestingUser)
+		{
+			lesson.setBut_note(butNote);
+			lessonRepository.save(lesson);
+			return "final note successfully saved";
+		}
+		else
+		{
+			return "fail";
+		}
+	}
 	public List<Lesson> getLessonsOfAStudentForACertainTerm(HttpServletRequest request, long termId,
 			String studentUsername) {
 		Principal pl=request.getUserPrincipal();
@@ -770,6 +795,7 @@ public class LessonService {
 		
 		
 	}
+	
 
 	
 
