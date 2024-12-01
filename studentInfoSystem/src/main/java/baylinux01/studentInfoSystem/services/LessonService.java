@@ -10,10 +10,12 @@ import baylinux01.studentInfoSystem.entities.AppUser;
 import baylinux01.studentInfoSystem.entities.Lesson;
 import baylinux01.studentInfoSystem.entities.LessonRegistration;
 import baylinux01.studentInfoSystem.entities.LessonToChoose;
+import baylinux01.studentInfoSystem.entities.Term;
 import baylinux01.studentInfoSystem.repositories.AppUserRepository;
 import baylinux01.studentInfoSystem.repositories.LessonRegistrationRepository;
 import baylinux01.studentInfoSystem.repositories.LessonRepository;
 import baylinux01.studentInfoSystem.repositories.LessonToChooseRepository;
+import baylinux01.studentInfoSystem.repositories.TermRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 
@@ -24,17 +26,20 @@ public class LessonService {
 	AppUserRepository appUserRepository;
 	LessonToChooseRepository lessonToChooseRepository;
 	LessonRegistrationRepository lessonRegistrationRepository;
+	TermRepository termRepository;
 	
 	@Autowired
 	public LessonService(LessonRepository lessonRepository
 			,AppUserRepository appUserRepository
 			,LessonToChooseRepository lessonToChooseRepository
-			,LessonRegistrationRepository lessonRegistrationRepository) {
+			,LessonRegistrationRepository lessonRegistrationRepository
+			,TermRepository termRepository) {
 		super();
 		this.lessonRepository = lessonRepository;
 		this.appUserRepository=appUserRepository;
 		this.lessonToChooseRepository=lessonToChooseRepository;
 		this.lessonRegistrationRepository=lessonRegistrationRepository;
+		this.termRepository=termRepository;
 	}
 	@Transactional
 	public String addLessonToLessonRegistration(HttpServletRequest request, long lessonToChooseId,
@@ -226,6 +231,78 @@ public class LessonService {
 			return "fail";
 		}
 		
+	}
+	public String giveMidtermNoteToLesson(HttpServletRequest request,long lessonId, double midtermNote) {
+		Principal pl=request.getUserPrincipal();
+		String requestingUsername=pl.getName();
+		Lesson lesson=lessonRepository.findById(lessonId).orElse(null);
+		AppUser requestingUser=appUserRepository.findByUsername(requestingUsername);
+		if(requestingUser!=null&&requestingUser.getRoles().contains("ADMIN"))
+		{
+			lesson.setMidterm_note(midtermNote);
+			return "midterm note successfully saved";
+		}
+		else if(requestingUser!=null
+				&&requestingUser.getRoles().contains("TEACHER")
+				&&lesson!=null
+				&&lesson.getTeacher()==requestingUser)
+		{
+			lesson.setMidterm_note(midtermNote);
+			return "midterm note successfully saved";
+		}
+		else
+		{
+			return "fail";
+		}
+	}
+	public String givefinalNoteToLesson(HttpServletRequest request, long lessonId, double finalNote) {
+		Principal pl=request.getUserPrincipal();
+		String requestingUsername=pl.getName();
+		Lesson lesson=lessonRepository.findById(lessonId).orElse(null);
+		AppUser requestingUser=appUserRepository.findByUsername(requestingUsername);
+		if(requestingUser!=null&&requestingUser.getRoles().contains("ADMIN"))
+		{
+			lesson.setFinal_note(finalNote);
+			return "final note successfully saved";
+		}
+		else if(requestingUser!=null
+				&&requestingUser.getRoles().contains("TEACHER")
+				&&lesson!=null
+				&&lesson.getTeacher()==requestingUser)
+		{
+			lesson.setFinal_note(finalNote);
+			return "final note successfully saved";
+		}
+		else
+		{
+			return "fail";
+		}
+	}
+	public List<Lesson> getLessonsOfAStudentForACertainTerm(HttpServletRequest request, long termId,
+			String studentUsername) {
+		Principal pl=request.getUserPrincipal();
+		String requestingUsername=pl.getName();
+		Term term=termRepository.findById(termId).orElse(null);
+		AppUser student=appUserRepository.findByUsername(studentUsername);
+		AppUser requestingUser=appUserRepository.findByUsername(requestingUsername);
+		if(requestingUser!=null&&term!=null&&student!=null&&student.getRoles().contains("STUDENT")
+				&&(requestingUser.getRoles().contains("ADMIN")||requestingUser.getRoles().contains("TEACHER")))
+		{
+			LessonRegistration lessonRegistration=term.getLessonRegistration();
+			if(lessonRegistration!=null)
+			{
+				List<Lesson> lessons=lessonRegistration.getLessons();
+				return lessons;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	

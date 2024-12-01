@@ -17,8 +17,9 @@ public class Lesson {
 	private String program;
 	private String name;
 	private int semi_year;
-	private double visa_note;
+	private double midterm_note;
 	private double final_note;
+	private double but_note;
 	private double note;
 	private String letter_grade;
 	@ManyToOne
@@ -27,6 +28,18 @@ public class Lesson {
 	private AppUser teacher;
 	
 	
+	public double getBut_note() {
+		return but_note;
+	}
+	public void setBut_note(double but_note) {
+		this.but_note = but_note;
+	}
+	public double getMidterm_note() {
+		return midterm_note;
+	}
+	public void setMidterm_note(double midterm_note) {
+		this.midterm_note = midterm_note;
+	}
 	public AppUser getTeacher() {
 		return teacher;
 	}
@@ -69,12 +82,7 @@ public class Lesson {
 	public void setSemi_year(int semi_year) {
 		this.semi_year = semi_year;
 	}
-	public double getVisa_note() {
-		return visa_note;
-	}
-	public void setVisa_note(double visa_note) {
-		this.visa_note = visa_note;
-	}
+	
 	public double getFinal_note() {
 		return final_note;
 	}

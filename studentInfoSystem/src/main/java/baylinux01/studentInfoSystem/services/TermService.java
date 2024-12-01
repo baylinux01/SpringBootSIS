@@ -106,6 +106,23 @@ public class TermService {
 		}
 	}
 
+	public List<Term> getTermsOfAStudent(HttpServletRequest request, String studentUsername) {
+		Principal pl=request.getUserPrincipal();
+		String requestingUsername=pl.getName();
+		AppUser requestingUser=appUserRepository.findByUsername(requestingUsername);
+		AppUser student=appUserRepository.findByUsername(studentUsername);
+		if(requestingUser!=null&&student!=null
+				&&(requestingUser.getRoles().contains("ADMIN")||requestingUser.getRoles().contains("TEACHER")))
+		{
+			List<Term> terms=student.getTerms();
+			return terms;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 	
 	
 	

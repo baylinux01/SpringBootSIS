@@ -1,11 +1,15 @@
 package baylinux01.studentInfoSystem.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import baylinux01.studentInfoSystem.entities.Term;
 import baylinux01.studentInfoSystem.services.TermService;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -36,6 +40,12 @@ public class TermController {
 			)
 	{
 		return termService.createTermForAllStudents(request,termToChooseId);
+	}
+	
+	@GetMapping("/getTermsOfAStudent")
+	public List<Term> getTermsOfAStudent(HttpServletRequest request,String studentUsername)
+	{
+		return termService.getTermsOfAStudent(request, studentUsername);
 	}
 	
 	
