@@ -538,6 +538,239 @@ public class LessonService {
 		}
 		
 	}
+	public String determineNotesForAllLessons(HttpServletRequest request) {
+		List<LessonToChoose> lessonsToChoose=lessonToChooseRepository.findAll();
+		Principal pl=request.getUserPrincipal();
+		String requestingUsername=pl.getName();
+		AppUser requestingUser=appUserRepository.findByUsername(requestingUsername);
+		if(requestingUser!=null&&requestingUser.getRoles().contains("ADMIN")
+				&&lessonsToChoose!=null)
+		{
+			
+			for(LessonToChoose lessonToChoose:lessonsToChoose)
+			{
+				List<Lesson> lessons=lessonRepository.findByCode(lessonToChoose.getCode());
+				if(lessons!=null)
+				{
+					int n=0;
+					int sum=0;
+					int i=0;
+					while(i<lessons.size())
+					{
+						if(lessons.get(i).getMidterm_note()>=0
+								&&lessons.get(i).getFinal_note()>=0)
+						{
+							lessons.get(i).setNote
+							(0.4*lessons.get(i).getMidterm_note()
+									+0.6*lessons.get(i).getFinal_note());
+							lessonRepository.save(lessons.get(i));
+							sum+=lessons.get(i).getNote();
+							n++;
+						}
+						i++;
+						
+					}
+					double average=Double.valueOf(sum)/n;
+					if(average>=50)
+					{
+						i=0;
+						while(i<lessons.size())
+						{
+							if(lessons.get(i).getNote()>=80)
+							{
+								lessons.get(i).setLetter_grade("AA");
+							}
+							else if(lessons.get(i).getNote()>=70)
+							{
+								lessons.get(i).setLetter_grade("BA");
+							}
+							else if(lessons.get(i).getNote()>=60)
+							{
+								lessons.get(i).setLetter_grade("BB");
+							}
+							else if(lessons.get(i).getNote()>=50)
+							{
+								lessons.get(i).setLetter_grade("CC");
+							}
+							else if(lessons.get(i).getNote()>=40)
+							{
+								lessons.get(i).setLetter_grade("DC");
+							}
+							else if(lessons.get(i).getNote()>=30)
+							{
+								lessons.get(i).setLetter_grade("DD");
+							}
+							else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
+							{
+								lessons.get(i).setLetter_grade("FF");
+							}
+							if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
+							{
+								lessons.get(i).setLetter_grade("FF");
+							}
+							lessonRepository.save(lessons.get(i));
+							i++;
+							
+						}
+					}
+					else
+					{
+						i=0;
+						while(i<lessons.size())
+						{
+							if(lessons.get(i).getNote()>=average+30)
+							{
+								lessons.get(i).setLetter_grade("AA");
+							}
+							else if(lessons.get(i).getNote()>=average+20)
+							{
+								lessons.get(i).setLetter_grade("BA");
+							}
+							else if(lessons.get(i).getNote()>=average+10)
+							{
+								lessons.get(i).setLetter_grade("BB");
+							}
+							else if(lessons.get(i).getNote()>=average)
+							{
+								lessons.get(i).setLetter_grade("CC");
+							}
+							else if(lessons.get(i).getNote()>=average-10)
+							{
+								lessons.get(i).setLetter_grade("DC");
+							}
+							else if(lessons.get(i).getNote()>=average-20)
+							{
+								lessons.get(i).setLetter_grade("DD");
+							}
+							else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
+							{
+								lessons.get(i).setLetter_grade("FF");
+							}
+							if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
+							{
+								lessons.get(i).setLetter_grade("FF");
+							}
+							lessonRepository.save(lessons.get(i));
+							i++;
+							
+						}
+					}
+					i=0;
+					while(i<lessons.size())
+					{
+						
+						if(lessons.get(i).getBut_note()>=0
+								&&lessons.get(i).getMidterm_note()>=0)
+						{
+							lessons.get(i).setNote
+							(0.4*lessons.get(i).getMidterm_note()
+									+0.6*lessons.get(i).getBut_note());
+							lessonRepository.save(lessons.get(i));
+						}
+						i++;
+					}
+					if(average>=50)
+					{
+						i=0;
+						while(i<lessons.size())
+						{
+							if(lessons.get(i).getNote()>=80)
+							{
+								lessons.get(i).setLetter_grade("AA");
+							}
+							else if(lessons.get(i).getNote()>=70)
+							{
+								lessons.get(i).setLetter_grade("BA");
+							}
+							else if(lessons.get(i).getNote()>=60)
+							{
+								lessons.get(i).setLetter_grade("BB");
+							}
+							else if(lessons.get(i).getNote()>=50)
+							{
+								lessons.get(i).setLetter_grade("CC");
+							}
+							else if(lessons.get(i).getNote()>=40)
+							{
+								lessons.get(i).setLetter_grade("DC");
+							}
+							else if(lessons.get(i).getNote()>=30)
+							{
+								lessons.get(i).setLetter_grade("DD");
+							}
+							else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
+							{
+								lessons.get(i).setLetter_grade("FF");
+							}
+							if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
+							{
+								lessons.get(i).setLetter_grade("FF");
+							}
+							lessonRepository.save(lessons.get(i));
+							i++;
+							
+						}
+					}
+					else
+					{
+						i=0;
+						while(i<lessons.size())
+						{
+							if(lessons.get(i).getNote()>=average+30)
+							{
+								lessons.get(i).setLetter_grade("AA");
+							}
+							else if(lessons.get(i).getNote()>=average+20)
+							{
+								lessons.get(i).setLetter_grade("BA");
+							}
+							else if(lessons.get(i).getNote()>=average+10)
+							{
+								lessons.get(i).setLetter_grade("BB");
+							}
+							else if(lessons.get(i).getNote()>=average)
+							{
+								lessons.get(i).setLetter_grade("CC");
+							}
+							else if(lessons.get(i).getNote()>=average-10)
+							{
+								lessons.get(i).setLetter_grade("DC");
+							}
+							else if(lessons.get(i).getNote()>=average-20)
+							{
+								lessons.get(i).setLetter_grade("DD");
+							}
+							else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
+							{
+								lessons.get(i).setLetter_grade("FF");
+							}
+							if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
+							{
+								lessons.get(i).setLetter_grade("FF");
+							}
+							lessonRepository.save(lessons.get(i));
+							i++;
+							
+						}
+					}
+					
+				
+			}
+			else
+			{
+				
+			}
+			}return "notes successfully calculated";
+			
+		}
+		else
+		{
+			return "fail";
+		}
+		
+		
+	}
+
 	
 
 	
