@@ -24,10 +24,10 @@ public class LessonController {
 	
 	@PostMapping("/addLessonToLessonRegistration")
 	public String addLessonToLessonRegistration(HttpServletRequest request
-			,long lessonToChooseId,long lessonRegistrationId)
+			,long lessonToChooseId,long lessonRegistrationId,String teacherUsername)
 	{
 		return lessonService
-				.addLessonToLessonRegistration(request,lessonToChooseId,lessonRegistrationId);
+				.addLessonToLessonRegistration(request,lessonToChooseId,lessonRegistrationId,teacherUsername);
 	}
 	
 	

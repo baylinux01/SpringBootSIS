@@ -38,16 +38,19 @@ public class LessonService {
 	}
 	@Transactional
 	public String addLessonToLessonRegistration(HttpServletRequest request, long lessonToChooseId,
-			long lessonRegistrationId) {
+			long lessonRegistrationId,String teacherUsername) {
 		Principal pl=request.getUserPrincipal();
 		String requestingUsername=pl.getName();
 		AppUser requestingUser=appUserRepository.findByUsername(requestingUsername);
+		AppUser teacher=appUserRepository.findByUsername(teacherUsername);
 		LessonRegistration lessonRegistration
 		=lessonRegistrationRepository.findById(lessonRegistrationId).orElse(null);
 		LessonToChoose lessonToChoose=lessonToChooseRepository
 				.findById(lessonToChooseId).orElse(null);
 		if(requestingUser!=null&& requestingUser.getRoles().contains("ADMIN")
-				&&lessonRegistration.getTerm().getStudent().getProgram().equalsIgnoreCase(lessonToChoose.getProgram()))		
+				&&lessonRegistration.getTerm().getStudent().getProgram().equalsIgnoreCase(lessonToChoose.getProgram())
+				&&teacher!=null
+				&&teacher.getRoles().contains("TEACHER"))		
 		{
 			if((lessonRegistration.getName().contains("GÜZ")
 					&&lessonToChoose.getSemi_year()%2==1)
@@ -62,6 +65,7 @@ public class LessonService {
 					lesson.setName(lessonToChoose.getName());
 					lesson.setProgram(lessonToChoose.getProgram());
 					lesson.setSemi_year(lessonToChoose.getSemi_year());
+					lesson.setTeacher(teacher);
 					
 					List<Lesson> lessons=lessonRegistration.getLessons();
 					int i=0;
@@ -77,6 +81,7 @@ public class LessonService {
 						lessons.add(lesson);
 						lesson.setLesson_registration(lessonRegistration);
 						lessonRegistration.setLessons(lessons);
+						appUserRepository.save(teacher);
 						lessonRepository.save(lesson);
 						lessonRegistrationRepository.save(lessonRegistration);
 						return "lesson successfully added to lesson registration";
@@ -103,7 +108,9 @@ public class LessonService {
 				&&lessonRegistration.getTerm().getStudent()==requestingUser
 				&&requestingUser.getProgram().equalsIgnoreCase(lessonToChoose.getProgram())
 				&&lessonRegistration.isAbsolutized()==false
-				&&lessonRegistration.isApproval()==false)
+				&&lessonRegistration.isApproval()==false
+				&&teacher!=null
+				&&teacher.getRoles().contains("TEACHER"))
 		{
 			if((lessonRegistration.getName().contains("GÜZ")
 					&&lessonToChoose.getSemi_year()%2==1)
@@ -118,6 +125,7 @@ public class LessonService {
 					lesson.setName(lessonToChoose.getName());
 					lesson.setProgram(lessonToChoose.getProgram());
 					lesson.setSemi_year(lessonToChoose.getSemi_year());
+					lesson.setTeacher(teacher);
 					
 					List<Lesson> lessons=lessonRegistration.getLessons();
 					int i=0;
@@ -133,6 +141,7 @@ public class LessonService {
 						lessons.add(lesson);
 						lesson.setLesson_registration(lessonRegistration);
 						lessonRegistration.setLessons(lessons);
+						appUserRepository.save(teacher);
 						lessonRepository.save(lesson);
 						lessonRegistrationRepository.save(lessonRegistration);
 						return "lesson successfully added to lesson registration";
@@ -157,7 +166,9 @@ public class LessonService {
 		else if(requestingUser.getRoles().contains("TEACHER")
 				&&requestingUser.getStudents().contains(lessonRegistration.getTerm().getStudent())
 				&&lessonRegistration.getTerm().getStudent().getProgram().equalsIgnoreCase(lessonToChoose.getProgram())
-				&&lessonRegistration.isApproval()==false)
+				&&lessonRegistration.isApproval()==false
+				&&teacher!=null
+				&&teacher.getRoles().contains("TEACHER"))
 		{
 			if((lessonRegistration.getName().contains("GÜZ")
 					&&lessonToChoose.getSemi_year()%2==1)
@@ -172,6 +183,7 @@ public class LessonService {
 					lesson.setName(lessonToChoose.getName());
 					lesson.setProgram(lessonToChoose.getProgram());
 					lesson.setSemi_year(lessonToChoose.getSemi_year());
+					lesson.setTeacher(teacher);
 					
 					List<Lesson> lessons=lessonRegistration.getLessons();
 					int i=0;
@@ -187,6 +199,7 @@ public class LessonService {
 						lessons.add(lesson);
 						lesson.setLesson_registration(lessonRegistration);
 						lessonRegistration.setLessons(lessons);
+						appUserRepository.save(teacher);
 						lessonRepository.save(lesson);
 						lessonRegistrationRepository.save(lessonRegistration);
 						return "lesson successfully added to lesson registration";

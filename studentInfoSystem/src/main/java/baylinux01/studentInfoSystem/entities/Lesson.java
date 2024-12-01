@@ -22,8 +22,15 @@ public class Lesson {
 	private String letter_grade;
 	@ManyToOne
 	private LessonRegistration lesson_registration;
+	private AppUser teacher;
 	
 	
+	public AppUser getTeacher() {
+		return teacher;
+	}
+	public void setTeacher(AppUser teacher) {
+		this.teacher = teacher;
+	}
 	public LessonRegistration getLesson_registration() {
 		return lesson_registration;
 	}
