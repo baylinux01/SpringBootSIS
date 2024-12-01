@@ -56,10 +56,10 @@ public class LessonController {
 	{
 		return lessonService.getAllLessons(request);
 	}
-	@PutMapping("/determineNotes")
-	public String determineNotes(HttpServletRequest request)
+	@PutMapping("/determineNotesByLesson")
+	public String determineNotesByLesson(HttpServletRequest request,String lessonCode)
 	{
-		return lessonService.determineNotes(request);
+		return lessonService.determineNotesByLesson(request,lessonCode);
 	}
 	
 }
