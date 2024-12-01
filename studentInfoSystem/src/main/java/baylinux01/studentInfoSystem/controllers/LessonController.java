@@ -41,16 +41,25 @@ public class LessonController {
 		return lessonService.giveMidtermNoteToLesson(request,lessonId,midtermNote);
 	}
 	
-	@PutMapping("/givefinalNoteToLesson")
-	public String givefinalNoteToLesson(HttpServletRequest request,long lessonId, double finalNote)
+	@PutMapping("/giveFinalNoteToLesson")
+	public String giveFinalNoteToLesson(HttpServletRequest request,long lessonId, double finalNote)
 	{
-		return lessonService.givefinalNoteToLesson(request,lessonId,finalNote);
+		return lessonService.giveFinalNoteToLesson(request,lessonId,finalNote);
 	}
 	@GetMapping("/getLessonsOfAStudentForACertainTerm")
 	public List<Lesson> getLessonsOfAStudentForACertainTerm(HttpServletRequest request,long termId,String studentUsername)
 	{
 		return lessonService.getLessonsOfAStudentForACertainTerm(request,termId,studentUsername);
 	}
-	
+	@GetMapping("/getAllLessons")
+	public List<Lesson> getAllLessons(HttpServletRequest request)
+	{
+		return lessonService.getAllLessons(request);
+	}
+	@PutMapping("/determineNotes")
+	public String determineNotes(HttpServletRequest request)
+	{
+		return lessonService.determineNotes(request);
+	}
 	
 }

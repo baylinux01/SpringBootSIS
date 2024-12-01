@@ -240,6 +240,7 @@ public class LessonService {
 		if(requestingUser!=null&&requestingUser.getRoles().contains("ADMIN"))
 		{
 			lesson.setMidterm_note(midtermNote);
+			lessonRepository.save(lesson);
 			return "midterm note successfully saved";
 		}
 		else if(requestingUser!=null
@@ -248,6 +249,7 @@ public class LessonService {
 				&&lesson.getTeacher()==requestingUser)
 		{
 			lesson.setMidterm_note(midtermNote);
+			lessonRepository.save(lesson);
 			return "midterm note successfully saved";
 		}
 		else
@@ -255,7 +257,7 @@ public class LessonService {
 			return "fail";
 		}
 	}
-	public String givefinalNoteToLesson(HttpServletRequest request, long lessonId, double finalNote) {
+	public String giveFinalNoteToLesson(HttpServletRequest request, long lessonId, double finalNote) {
 		Principal pl=request.getUserPrincipal();
 		String requestingUsername=pl.getName();
 		Lesson lesson=lessonRepository.findById(lessonId).orElse(null);
@@ -263,6 +265,7 @@ public class LessonService {
 		if(requestingUser!=null&&requestingUser.getRoles().contains("ADMIN"))
 		{
 			lesson.setFinal_note(finalNote);
+			lessonRepository.save(lesson);
 			return "final note successfully saved";
 		}
 		else if(requestingUser!=null
@@ -271,6 +274,7 @@ public class LessonService {
 				&&lesson.getTeacher()==requestingUser)
 		{
 			lesson.setFinal_note(finalNote);
+			lessonRepository.save(lesson);
 			return "final note successfully saved";
 		}
 		else
@@ -304,6 +308,58 @@ public class LessonService {
 			return null;
 		}
 	}
+	public List<Lesson> getAllLessons(HttpServletRequest request) {
+		return lessonRepository.findAll();
+		
+	}
+	public String determineNotes(HttpServletRequest request) {
+		
+		Principal pl=request.getUserPrincipal();
+		String requestingUsername=pl.getName();
+		AppUser requestingUser=appUserRepository.findByUsername(requestingUsername);
+		if(requestingUser!=null&&requestingUser.getRoles().contains("ADMIN"))
+		{
+			
+				List<Lesson> lessons=lessonRepository.findAll();
+				if(lessons!=null)
+				{
+					int i=0;
+					while(i<lessons.size())
+					{
+						if(lessons.get(i).getBut_note()<0
+								&&lessons.get(i).getMidterm_note()>=0
+								&&lessons.get(i).getFinal_note()>=0)
+						{
+							lessons.get(i).setNote
+							(0.4*lessons.get(i).getMidterm_note()
+									+0.6*lessons.get(i).getFinal_note());
+							lessonRepository.save(lessons.get(i));
+						}
+						if(lessons.get(i).getBut_note()>=0
+								&&lessons.get(i).getMidterm_note()>=0)
+						{
+							lessons.get(i).setNote
+							(0.4*lessons.get(i).getMidterm_note()
+									+0.6*lessons.get(i).getBut_note());
+							lessonRepository.save(lessons.get(i));
+						}
+						i++;
+					}
+					return "notes successfully calculated";
+				
+			}
+			else
+			{
+				return "fail";
+			}
+		}
+		else
+		{
+			return "fail";
+		}
+		
+	}
+	
 
 	
 	

@@ -1,5 +1,6 @@
 package baylinux01.studentInfoSystem.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,10 +18,10 @@ public class Lesson {
 	private String program;
 	private String name;
 	private int semi_year;
-	private double midterm_note;
-	private double final_note;
-	private double but_note;
-	private double note;
+	private double midterm_note=-1;
+	private double final_note=-1;
+	private double but_note=-1;
+	private double note=-1;
 	private String letter_grade;
 	@ManyToOne
 	private LessonRegistration lesson_registration;
