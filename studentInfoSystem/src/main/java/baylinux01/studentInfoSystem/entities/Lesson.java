@@ -23,6 +23,15 @@ public class Lesson {
 	private double but_note=-1;
 	private double note=-1;
 	private String letter_grade;
+	private boolean exempt=false;
+	
+	
+	public boolean isExempt() {
+		return exempt;
+	}
+	public void setExempt(boolean exempt) {
+		this.exempt = exempt;
+	}
 	@ManyToOne
 	private LessonRegistration lesson_registration;
 	@ManyToOne

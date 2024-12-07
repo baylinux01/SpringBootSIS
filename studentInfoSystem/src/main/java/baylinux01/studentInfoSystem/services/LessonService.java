@@ -354,7 +354,9 @@ public class LessonService {
 					while(i<lessons.size())
 					{
 						if(lessons.get(i).getMidterm_note()>=0
-								&&lessons.get(i).getFinal_note()>=0)
+								&&lessons.get(i).getFinal_note()>=0
+								&&!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
+								&&lessons.get(i).isExempt()!=true)
 						{
 							lessons.get(i).setNote
 							(0.4*lessons.get(i).getMidterm_note()
@@ -372,39 +374,43 @@ public class LessonService {
 						i=0;
 						while(i<lessons.size())
 						{
-							if(lessons.get(i).getNote()>=80)
+							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")&&lessons.get(i).isExempt()!=true)
 							{
-								lessons.get(i).setLetter_grade("AA");
+								if(lessons.get(i).getNote()>=80)
+								{
+									lessons.get(i).setLetter_grade("AA");
+								}
+								else if(lessons.get(i).getNote()>=70)
+								{
+									lessons.get(i).setLetter_grade("BA");
+								}
+								else if(lessons.get(i).getNote()>=60)
+								{
+									lessons.get(i).setLetter_grade("BB");
+								}
+								else if(lessons.get(i).getNote()>=50)
+								{
+									lessons.get(i).setLetter_grade("CC");
+								}
+								else if(lessons.get(i).getNote()>=40)
+								{
+									lessons.get(i).setLetter_grade("DC");
+								}
+								else if(lessons.get(i).getNote()>=30)
+								{
+									lessons.get(i).setLetter_grade("DD");
+								}
+								else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								lessonRepository.save(lessons.get(i));
 							}
-							else if(lessons.get(i).getNote()>=70)
-							{
-								lessons.get(i).setLetter_grade("BA");
-							}
-							else if(lessons.get(i).getNote()>=60)
-							{
-								lessons.get(i).setLetter_grade("BB");
-							}
-							else if(lessons.get(i).getNote()>=50)
-							{
-								lessons.get(i).setLetter_grade("CC");
-							}
-							else if(lessons.get(i).getNote()>=40)
-							{
-								lessons.get(i).setLetter_grade("DC");
-							}
-							else if(lessons.get(i).getNote()>=30)
-							{
-								lessons.get(i).setLetter_grade("DD");
-							}
-							else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							lessonRepository.save(lessons.get(i));
+							
 							i++;
 							
 						}
@@ -414,39 +420,43 @@ public class LessonService {
 						i=0;
 						while(i<lessons.size())
 						{
-							if(lessons.get(i).getNote()>=average+30)
+							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")&&lessons.get(i).isExempt()!=true)
 							{
-								lessons.get(i).setLetter_grade("AA");
+								if(lessons.get(i).getNote()>=average+30)
+								{
+									lessons.get(i).setLetter_grade("AA");
+								}
+								else if(lessons.get(i).getNote()>=average+20)
+								{
+									lessons.get(i).setLetter_grade("BA");
+								}
+								else if(lessons.get(i).getNote()>=average+10)
+								{
+									lessons.get(i).setLetter_grade("BB");
+								}
+								else if(lessons.get(i).getNote()>=average)
+								{
+									lessons.get(i).setLetter_grade("CC");
+								}
+								else if(lessons.get(i).getNote()>=average-10)
+								{
+									lessons.get(i).setLetter_grade("DC");
+								}
+								else if(lessons.get(i).getNote()>=average-20)
+								{
+									lessons.get(i).setLetter_grade("DD");
+								}
+								else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								lessonRepository.save(lessons.get(i));
 							}
-							else if(lessons.get(i).getNote()>=average+20)
-							{
-								lessons.get(i).setLetter_grade("BA");
-							}
-							else if(lessons.get(i).getNote()>=average+10)
-							{
-								lessons.get(i).setLetter_grade("BB");
-							}
-							else if(lessons.get(i).getNote()>=average)
-							{
-								lessons.get(i).setLetter_grade("CC");
-							}
-							else if(lessons.get(i).getNote()>=average-10)
-							{
-								lessons.get(i).setLetter_grade("DC");
-							}
-							else if(lessons.get(i).getNote()>=average-20)
-							{
-								lessons.get(i).setLetter_grade("DD");
-							}
-							else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							lessonRepository.save(lessons.get(i));
+							
 							i++;
 							
 						}
@@ -456,7 +466,9 @@ public class LessonService {
 					{
 						
 						if(lessons.get(i).getBut_note()>=0
-								&&lessons.get(i).getMidterm_note()>=0)
+								&&lessons.get(i).getMidterm_note()>=0
+								&&!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
+								&&lessons.get(i).isExempt()!=true)
 						{
 							lessons.get(i).setNote
 							(0.4*lessons.get(i).getMidterm_note()
@@ -470,39 +482,43 @@ public class LessonService {
 						i=0;
 						while(i<lessons.size())
 						{
-							if(lessons.get(i).getNote()>=80)
+							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")&&lessons.get(i).isExempt()!=true)
 							{
-								lessons.get(i).setLetter_grade("AA");
+								if(lessons.get(i).getNote()>=80)
+								{
+									lessons.get(i).setLetter_grade("AA");
+								}
+								else if(lessons.get(i).getNote()>=70)
+								{
+									lessons.get(i).setLetter_grade("BA");
+								}
+								else if(lessons.get(i).getNote()>=60)
+								{
+									lessons.get(i).setLetter_grade("BB");
+								}
+								else if(lessons.get(i).getNote()>=50)
+								{
+									lessons.get(i).setLetter_grade("CC");
+								}
+								else if(lessons.get(i).getNote()>=40)
+								{
+									lessons.get(i).setLetter_grade("DC");
+								}
+								else if(lessons.get(i).getNote()>=30)
+								{
+									lessons.get(i).setLetter_grade("DD");
+								}
+								else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								lessonRepository.save(lessons.get(i));
 							}
-							else if(lessons.get(i).getNote()>=70)
-							{
-								lessons.get(i).setLetter_grade("BA");
-							}
-							else if(lessons.get(i).getNote()>=60)
-							{
-								lessons.get(i).setLetter_grade("BB");
-							}
-							else if(lessons.get(i).getNote()>=50)
-							{
-								lessons.get(i).setLetter_grade("CC");
-							}
-							else if(lessons.get(i).getNote()>=40)
-							{
-								lessons.get(i).setLetter_grade("DC");
-							}
-							else if(lessons.get(i).getNote()>=30)
-							{
-								lessons.get(i).setLetter_grade("DD");
-							}
-							else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							lessonRepository.save(lessons.get(i));
+							
 							i++;
 							
 						}
@@ -512,39 +528,43 @@ public class LessonService {
 						i=0;
 						while(i<lessons.size())
 						{
-							if(lessons.get(i).getNote()>=average+30)
+							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")&&lessons.get(i).isExempt()!=true)
 							{
-								lessons.get(i).setLetter_grade("AA");
+								if(lessons.get(i).getNote()>=average+30)
+								{
+									lessons.get(i).setLetter_grade("AA");
+								}
+								else if(lessons.get(i).getNote()>=average+20)
+								{
+									lessons.get(i).setLetter_grade("BA");
+								}
+								else if(lessons.get(i).getNote()>=average+10)
+								{
+									lessons.get(i).setLetter_grade("BB");
+								}
+								else if(lessons.get(i).getNote()>=average)
+								{
+									lessons.get(i).setLetter_grade("CC");
+								}
+								else if(lessons.get(i).getNote()>=average-10)
+								{
+									lessons.get(i).setLetter_grade("DC");
+								}
+								else if(lessons.get(i).getNote()>=average-20)
+								{
+									lessons.get(i).setLetter_grade("DD");
+								}
+								else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								lessonRepository.save(lessons.get(i));
 							}
-							else if(lessons.get(i).getNote()>=average+20)
-							{
-								lessons.get(i).setLetter_grade("BA");
-							}
-							else if(lessons.get(i).getNote()>=average+10)
-							{
-								lessons.get(i).setLetter_grade("BB");
-							}
-							else if(lessons.get(i).getNote()>=average)
-							{
-								lessons.get(i).setLetter_grade("CC");
-							}
-							else if(lessons.get(i).getNote()>=average-10)
-							{
-								lessons.get(i).setLetter_grade("DC");
-							}
-							else if(lessons.get(i).getNote()>=average-20)
-							{
-								lessons.get(i).setLetter_grade("DD");
-							}
-							else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							lessonRepository.save(lessons.get(i));
+							
 							i++;
 							
 						}
@@ -583,7 +603,9 @@ public class LessonService {
 					while(i<lessons.size())
 					{
 						if(lessons.get(i).getMidterm_note()>=0
-								&&lessons.get(i).getFinal_note()>=0)
+								&&lessons.get(i).getFinal_note()>=0
+								&&!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
+								&&lessons.get(i).isExempt()!=true)
 						{
 							lessons.get(i).setNote
 							(0.4*lessons.get(i).getMidterm_note()
@@ -600,40 +622,45 @@ public class LessonService {
 					{
 						i=0;
 						while(i<lessons.size())
-						{
-							if(lessons.get(i).getNote()>=80)
+						{  
+							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
+									&&lessons.get(i).isExempt()!=true)
 							{
-								lessons.get(i).setLetter_grade("AA");
+								if(lessons.get(i).getNote()>=80)
+								{
+									lessons.get(i).setLetter_grade("AA");
+								}
+								else if(lessons.get(i).getNote()>=70)
+								{
+									lessons.get(i).setLetter_grade("BA");
+								}
+								else if(lessons.get(i).getNote()>=60)
+								{
+									lessons.get(i).setLetter_grade("BB");
+								}
+								else if(lessons.get(i).getNote()>=50)
+								{
+									lessons.get(i).setLetter_grade("CC");
+								}
+								else if(lessons.get(i).getNote()>=40)
+								{
+									lessons.get(i).setLetter_grade("DC");
+								}
+								else if(lessons.get(i).getNote()>=30)
+								{
+									lessons.get(i).setLetter_grade("DD");
+								}
+								else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								lessonRepository.save(lessons.get(i));
 							}
-							else if(lessons.get(i).getNote()>=70)
-							{
-								lessons.get(i).setLetter_grade("BA");
-							}
-							else if(lessons.get(i).getNote()>=60)
-							{
-								lessons.get(i).setLetter_grade("BB");
-							}
-							else if(lessons.get(i).getNote()>=50)
-							{
-								lessons.get(i).setLetter_grade("CC");
-							}
-							else if(lessons.get(i).getNote()>=40)
-							{
-								lessons.get(i).setLetter_grade("DC");
-							}
-							else if(lessons.get(i).getNote()>=30)
-							{
-								lessons.get(i).setLetter_grade("DD");
-							}
-							else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							lessonRepository.save(lessons.get(i));
+							
 							i++;
 							
 						}
@@ -643,39 +670,44 @@ public class LessonService {
 						i=0;
 						while(i<lessons.size())
 						{
-							if(lessons.get(i).getNote()>=average+30)
+							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
+									&&lessons.get(i).isExempt()!=true)
 							{
-								lessons.get(i).setLetter_grade("AA");
+								if(lessons.get(i).getNote()>=average+30)
+								{
+									lessons.get(i).setLetter_grade("AA");
+								}
+								else if(lessons.get(i).getNote()>=average+20)
+								{
+									lessons.get(i).setLetter_grade("BA");
+								}
+								else if(lessons.get(i).getNote()>=average+10)
+								{
+									lessons.get(i).setLetter_grade("BB");
+								}
+								else if(lessons.get(i).getNote()>=average)
+								{
+									lessons.get(i).setLetter_grade("CC");
+								}
+								else if(lessons.get(i).getNote()>=average-10)
+								{
+									lessons.get(i).setLetter_grade("DC");
+								}
+								else if(lessons.get(i).getNote()>=average-20)
+								{
+									lessons.get(i).setLetter_grade("DD");
+								}
+								else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								lessonRepository.save(lessons.get(i));
 							}
-							else if(lessons.get(i).getNote()>=average+20)
-							{
-								lessons.get(i).setLetter_grade("BA");
-							}
-							else if(lessons.get(i).getNote()>=average+10)
-							{
-								lessons.get(i).setLetter_grade("BB");
-							}
-							else if(lessons.get(i).getNote()>=average)
-							{
-								lessons.get(i).setLetter_grade("CC");
-							}
-							else if(lessons.get(i).getNote()>=average-10)
-							{
-								lessons.get(i).setLetter_grade("DC");
-							}
-							else if(lessons.get(i).getNote()>=average-20)
-							{
-								lessons.get(i).setLetter_grade("DD");
-							}
-							else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							lessonRepository.save(lessons.get(i));
+							
 							i++;
 							
 						}
@@ -685,7 +717,9 @@ public class LessonService {
 					{
 						
 						if(lessons.get(i).getBut_note()>=0
-								&&lessons.get(i).getMidterm_note()>=0)
+								&&lessons.get(i).getMidterm_note()>=0
+								&&!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
+								&&lessons.get(i).isExempt()!=true)
 						{
 							lessons.get(i).setNote
 							(0.4*lessons.get(i).getMidterm_note()
@@ -699,39 +733,44 @@ public class LessonService {
 						i=0;
 						while(i<lessons.size())
 						{
-							if(lessons.get(i).getNote()>=80)
+							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
+									&&lessons.get(i).isExempt()!=true)
 							{
-								lessons.get(i).setLetter_grade("AA");
+								if(lessons.get(i).getNote()>=80)
+								{
+									lessons.get(i).setLetter_grade("AA");
+								}
+								else if(lessons.get(i).getNote()>=70)
+								{
+									lessons.get(i).setLetter_grade("BA");
+								}
+								else if(lessons.get(i).getNote()>=60)
+								{
+									lessons.get(i).setLetter_grade("BB");
+								}
+								else if(lessons.get(i).getNote()>=50)
+								{
+									lessons.get(i).setLetter_grade("CC");
+								}
+								else if(lessons.get(i).getNote()>=40)
+								{
+									lessons.get(i).setLetter_grade("DC");
+								}
+								else if(lessons.get(i).getNote()>=30)
+								{
+									lessons.get(i).setLetter_grade("DD");
+								}
+								else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								lessonRepository.save(lessons.get(i));
 							}
-							else if(lessons.get(i).getNote()>=70)
-							{
-								lessons.get(i).setLetter_grade("BA");
-							}
-							else if(lessons.get(i).getNote()>=60)
-							{
-								lessons.get(i).setLetter_grade("BB");
-							}
-							else if(lessons.get(i).getNote()>=50)
-							{
-								lessons.get(i).setLetter_grade("CC");
-							}
-							else if(lessons.get(i).getNote()>=40)
-							{
-								lessons.get(i).setLetter_grade("DC");
-							}
-							else if(lessons.get(i).getNote()>=30)
-							{
-								lessons.get(i).setLetter_grade("DD");
-							}
-							else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							lessonRepository.save(lessons.get(i));
+							
 							i++;
 							
 						}
@@ -741,39 +780,44 @@ public class LessonService {
 						i=0;
 						while(i<lessons.size())
 						{
-							if(lessons.get(i).getNote()>=average+30)
+							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
+									&&lessons.get(i).isExempt()!=true)
 							{
-								lessons.get(i).setLetter_grade("AA");
+								if(lessons.get(i).getNote()>=average+30)
+								{
+									lessons.get(i).setLetter_grade("AA");
+								}
+								else if(lessons.get(i).getNote()>=average+20)
+								{
+									lessons.get(i).setLetter_grade("BA");
+								}
+								else if(lessons.get(i).getNote()>=average+10)
+								{
+									lessons.get(i).setLetter_grade("BB");
+								}
+								else if(lessons.get(i).getNote()>=average)
+								{
+									lessons.get(i).setLetter_grade("CC");
+								}
+								else if(lessons.get(i).getNote()>=average-10)
+								{
+									lessons.get(i).setLetter_grade("DC");
+								}
+								else if(lessons.get(i).getNote()>=average-20)
+								{
+									lessons.get(i).setLetter_grade("DD");
+								}
+								else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
+								{
+									lessons.get(i).setLetter_grade("FF");
+								}
+								lessonRepository.save(lessons.get(i));
 							}
-							else if(lessons.get(i).getNote()>=average+20)
-							{
-								lessons.get(i).setLetter_grade("BA");
-							}
-							else if(lessons.get(i).getNote()>=average+10)
-							{
-								lessons.get(i).setLetter_grade("BB");
-							}
-							else if(lessons.get(i).getNote()>=average)
-							{
-								lessons.get(i).setLetter_grade("CC");
-							}
-							else if(lessons.get(i).getNote()>=average-10)
-							{
-								lessons.get(i).setLetter_grade("DC");
-							}
-							else if(lessons.get(i).getNote()>=average-20)
-							{
-								lessons.get(i).setLetter_grade("DD");
-							}
-							else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
-							{
-								lessons.get(i).setLetter_grade("FF");
-							}
-							lessonRepository.save(lessons.get(i));
+							
 							i++;
 							
 						}
