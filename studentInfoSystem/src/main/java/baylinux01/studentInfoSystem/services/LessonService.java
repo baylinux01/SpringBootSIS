@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import baylinux01.studentInfoSystem.entities.AppUser;
 import baylinux01.studentInfoSystem.entities.Lesson;
 import baylinux01.studentInfoSystem.entities.LessonRegistration;
+import baylinux01.studentInfoSystem.entities.LessonStatus;
 import baylinux01.studentInfoSystem.entities.LessonToChoose;
 import baylinux01.studentInfoSystem.entities.Term;
 import baylinux01.studentInfoSystem.repositories.AppUserRepository;
@@ -356,7 +357,10 @@ public class LessonService {
 						if(lessons.get(i).getMidterm_note()>=0
 								&&lessons.get(i).getFinal_note()>=0
 								&&!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
-								&&lessons.get(i).isExempt()!=true)
+								&&lessons.get(i).getStatus()!=LessonStatus.MUAF
+								&&lessons.get(i).getStatus()!=LessonStatus.GECTI
+								&&lessons.get(i).getStatus()!=LessonStatus.SARTLI_GECTI
+								&&lessons.get(i).getStatus()!=LessonStatus.KALDI)
 						{
 							lessons.get(i).setNote
 							(0.4*lessons.get(i).getMidterm_note()
@@ -374,39 +378,53 @@ public class LessonService {
 						i=0;
 						while(i<lessons.size())
 						{
-							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")&&lessons.get(i).isExempt()!=true)
+							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
+									&&lessons.get(i).getStatus()!=LessonStatus.MUAF
+									&&lessons.get(i).getStatus()!=LessonStatus.GECTI
+									&&lessons.get(i).getStatus()!=LessonStatus.SARTLI_GECTI
+									&&lessons.get(i).getStatus()!=LessonStatus.KALDI)
 							{
 								if(lessons.get(i).getNote()>=80)
 								{
 									lessons.get(i).setLetter_grade("AA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=70)
 								{
 									lessons.get(i).setLetter_grade("BA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=60)
 								{
 									lessons.get(i).setLetter_grade("BB");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=50)
 								{
 									lessons.get(i).setLetter_grade("CC");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=40)
 								{
 									lessons.get(i).setLetter_grade("DC");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()>=30)
 								{
 									lessons.get(i).setLetter_grade("DD");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
+									
 								}
 								if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
+									
 								}
 								lessonRepository.save(lessons.get(i));
 							}
@@ -420,39 +438,51 @@ public class LessonService {
 						i=0;
 						while(i<lessons.size())
 						{
-							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")&&lessons.get(i).isExempt()!=true)
+							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
+									&&lessons.get(i).getStatus()!=LessonStatus.MUAF
+									&&lessons.get(i).getStatus()!=LessonStatus.GECTI
+									&&lessons.get(i).getStatus()!=LessonStatus.SARTLI_GECTI
+									&&lessons.get(i).getStatus()!=LessonStatus.KALDI)
 							{
 								if(lessons.get(i).getNote()>=average+30)
 								{
 									lessons.get(i).setLetter_grade("AA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average+20)
 								{
 									lessons.get(i).setLetter_grade("BA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average+10)
 								{
 									lessons.get(i).setLetter_grade("BB");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average)
 								{
 									lessons.get(i).setLetter_grade("CC");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average-10)
 								{
 									lessons.get(i).setLetter_grade("DC");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average-20)
 								{
 									lessons.get(i).setLetter_grade("DD");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								lessonRepository.save(lessons.get(i));
 							}
@@ -468,7 +498,9 @@ public class LessonService {
 						if(lessons.get(i).getBut_note()>=0
 								&&lessons.get(i).getMidterm_note()>=0
 								&&!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
-								&&lessons.get(i).isExempt()!=true)
+								&&lessons.get(i).getStatus()!=LessonStatus.MUAF
+								&&lessons.get(i).getStatus()!=LessonStatus.GECTI
+								&&lessons.get(i).getStatus()!=LessonStatus.SARTLI_GECTI)
 						{
 							lessons.get(i).setNote
 							(0.4*lessons.get(i).getMidterm_note()
@@ -482,39 +514,50 @@ public class LessonService {
 						i=0;
 						while(i<lessons.size())
 						{
-							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")&&lessons.get(i).isExempt()!=true)
+							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
+									&&lessons.get(i).getStatus()!=LessonStatus.MUAF
+									&&lessons.get(i).getStatus()!=LessonStatus.GECTI
+									&&lessons.get(i).getStatus()!=LessonStatus.SARTLI_GECTI)
 							{
 								if(lessons.get(i).getNote()>=80)
 								{
 									lessons.get(i).setLetter_grade("AA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=70)
 								{
 									lessons.get(i).setLetter_grade("BA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=60)
 								{
 									lessons.get(i).setLetter_grade("BB");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=50)
 								{
 									lessons.get(i).setLetter_grade("CC");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=40)
 								{
 									lessons.get(i).setLetter_grade("DC");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()>=30)
 								{
 									lessons.get(i).setLetter_grade("DD");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								lessonRepository.save(lessons.get(i));
 							}
@@ -528,39 +571,50 @@ public class LessonService {
 						i=0;
 						while(i<lessons.size())
 						{
-							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")&&lessons.get(i).isExempt()!=true)
+							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
+									&&lessons.get(i).getStatus()!=LessonStatus.MUAF
+									&&lessons.get(i).getStatus()!=LessonStatus.GECTI
+									&&lessons.get(i).getStatus()!=LessonStatus.SARTLI_GECTI)
 							{
 								if(lessons.get(i).getNote()>=average+30)
 								{
 									lessons.get(i).setLetter_grade("AA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average+20)
 								{
 									lessons.get(i).setLetter_grade("BA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average+10)
 								{
 									lessons.get(i).setLetter_grade("BB");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average)
 								{
 									lessons.get(i).setLetter_grade("CC");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average-10)
 								{
 									lessons.get(i).setLetter_grade("DC");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average-20)
 								{
 									lessons.get(i).setLetter_grade("DD");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								lessonRepository.save(lessons.get(i));
 							}
@@ -605,7 +659,10 @@ public class LessonService {
 						if(lessons.get(i).getMidterm_note()>=0
 								&&lessons.get(i).getFinal_note()>=0
 								&&!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
-								&&lessons.get(i).isExempt()!=true)
+								&&lessons.get(i).getStatus()!=LessonStatus.MUAF
+								&&lessons.get(i).getStatus()!=LessonStatus.GECTI
+								&&lessons.get(i).getStatus()!=LessonStatus.SARTLI_GECTI
+								&&lessons.get(i).getStatus()!=LessonStatus.KALDI)
 						{
 							lessons.get(i).setNote
 							(0.4*lessons.get(i).getMidterm_note()
@@ -624,11 +681,15 @@ public class LessonService {
 						while(i<lessons.size())
 						{  
 							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
-									&&lessons.get(i).isExempt()!=true)
+									&&lessons.get(i).getStatus()!=LessonStatus.MUAF
+									&&lessons.get(i).getStatus()!=LessonStatus.GECTI
+									&&lessons.get(i).getStatus()!=LessonStatus.SARTLI_GECTI
+									&&lessons.get(i).getStatus()!=LessonStatus.KALDI)
 							{
 								if(lessons.get(i).getNote()>=80)
 								{
 									lessons.get(i).setLetter_grade("AA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=70)
 								{
@@ -637,26 +698,32 @@ public class LessonService {
 								else if(lessons.get(i).getNote()>=60)
 								{
 									lessons.get(i).setLetter_grade("BB");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=50)
 								{
 									lessons.get(i).setLetter_grade("CC");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=40)
 								{
 									lessons.get(i).setLetter_grade("DC");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()>=30)
 								{
 									lessons.get(i).setLetter_grade("DD");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								lessonRepository.save(lessons.get(i));
 							}
@@ -671,39 +738,50 @@ public class LessonService {
 						while(i<lessons.size())
 						{
 							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
-									&&lessons.get(i).isExempt()!=true)
+									&&lessons.get(i).getStatus()!=LessonStatus.MUAF
+									&&lessons.get(i).getStatus()!=LessonStatus.GECTI
+									&&lessons.get(i).getStatus()!=LessonStatus.SARTLI_GECTI
+									&&lessons.get(i).getStatus()!=LessonStatus.KALDI)
 							{
 								if(lessons.get(i).getNote()>=average+30)
 								{
 									lessons.get(i).setLetter_grade("AA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average+20)
 								{
 									lessons.get(i).setLetter_grade("BA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average+10)
 								{
 									lessons.get(i).setLetter_grade("BB");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average)
 								{
 									lessons.get(i).setLetter_grade("CC");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average-10)
 								{
 									lessons.get(i).setLetter_grade("DC");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average-20)
 								{
 									lessons.get(i).setLetter_grade("DD");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								if(lessons.get(i).getFinal_note()<30&&lessons.get(i).getFinal_note()>=0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								lessonRepository.save(lessons.get(i));
 							}
@@ -719,7 +797,9 @@ public class LessonService {
 						if(lessons.get(i).getBut_note()>=0
 								&&lessons.get(i).getMidterm_note()>=0
 								&&!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
-								&&lessons.get(i).isExempt()!=true)
+								&&lessons.get(i).getStatus()!=LessonStatus.MUAF
+								&&lessons.get(i).getStatus()!=LessonStatus.GECTI
+								&&lessons.get(i).getStatus()!=LessonStatus.SARTLI_GECTI)
 						{
 							lessons.get(i).setNote
 							(0.4*lessons.get(i).getMidterm_note()
@@ -734,39 +814,49 @@ public class LessonService {
 						while(i<lessons.size())
 						{
 							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
-									&&lessons.get(i).isExempt()!=true)
+									&&lessons.get(i).getStatus()!=LessonStatus.MUAF
+									&&lessons.get(i).getStatus()!=LessonStatus.GECTI
+									&&lessons.get(i).getStatus()!=LessonStatus.SARTLI_GECTI)
 							{
 								if(lessons.get(i).getNote()>=80)
 								{
 									lessons.get(i).setLetter_grade("AA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=70)
 								{
 									lessons.get(i).setLetter_grade("BA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=60)
 								{
 									lessons.get(i).setLetter_grade("BB");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=50)
 								{
 									lessons.get(i).setLetter_grade("CC");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=40)
 								{
 									lessons.get(i).setLetter_grade("DC");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()>=30)
 								{
 									lessons.get(i).setLetter_grade("DD");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()<30&&lessons.get(i).getNote()>0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								lessonRepository.save(lessons.get(i));
 							}
@@ -781,39 +871,49 @@ public class LessonService {
 						while(i<lessons.size())
 						{
 							if(!lessons.get(i).getLetter_grade().equalsIgnoreCase("NA")
-									&&lessons.get(i).isExempt()!=true)
+									&&lessons.get(i).getStatus()!=LessonStatus.MUAF
+									&&lessons.get(i).getStatus()!=LessonStatus.GECTI
+									&&lessons.get(i).getStatus()!=LessonStatus.SARTLI_GECTI)
 							{
 								if(lessons.get(i).getNote()>=average+30)
 								{
 									lessons.get(i).setLetter_grade("AA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average+20)
 								{
 									lessons.get(i).setLetter_grade("BA");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average+10)
 								{
 									lessons.get(i).setLetter_grade("BB");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average)
 								{
 									lessons.get(i).setLetter_grade("CC");
+									lessons.get(i).setStatus(LessonStatus.GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average-10)
 								{
 									lessons.get(i).setLetter_grade("DC");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()>=average-20)
 								{
 									lessons.get(i).setLetter_grade("DD");
+									lessons.get(i).setStatus(LessonStatus.SARTLI_GECTI);
 								}
 								else if(lessons.get(i).getNote()<average-20&&lessons.get(i).getNote()>0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								if(lessons.get(i).getBut_note()<30&&lessons.get(i).getBut_note()>=0)
 								{
 									lessons.get(i).setLetter_grade("FF");
+									lessons.get(i).setStatus(LessonStatus.KALDI);
 								}
 								lessonRepository.save(lessons.get(i));
 							}

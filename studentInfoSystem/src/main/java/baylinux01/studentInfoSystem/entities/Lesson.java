@@ -23,14 +23,16 @@ public class Lesson {
 	private double but_note=-1;
 	private double note=-1;
 	private String letter_grade;
-	private boolean exempt=false;
+	private LessonStatus status=LessonStatus.SORUMLU;
 	
 	
-	public boolean isExempt() {
-		return exempt;
+	
+	
+	public LessonStatus getStatus() {
+		return status;
 	}
-	public void setExempt(boolean exempt) {
-		this.exempt = exempt;
+	public void setStatus(LessonStatus status) {
+		this.status = status;
 	}
 	@ManyToOne
 	private LessonRegistration lesson_registration;
